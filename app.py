@@ -140,6 +140,13 @@ try:
     plot_confusion_matrices(y_test_glcm, best_models_glcm, X_test_glcm, "GLCM")
     plot_confusion_matrices(y_test_lbp, best_models_lbp, X_test_lbp, "LBP")
 
+    # Define Hugging Face App Title
+    title = "Texture Classification Using GLCM and LBP"
+
+    title += "\n\nSelect an appropriate image, choose a feature extraction method (GLCM or LBP), and pick a classifier to predict the texture category."
+
+    title += "\n\nAppropriate image has little to no noise (only relevant texture)"
+    
     # Gradio Interface
     interface = gr.Interface(
         fn=classify_texture,
@@ -149,6 +156,7 @@ try:
             gr.Dropdown(choices=list(best_models_glcm.keys()), label="Select Classifier"),
         ],
         outputs=gr.Label(),
+        title=title,
     )
 
     logging.info("Launching Gradio interface...")
