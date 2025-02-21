@@ -5,6 +5,8 @@ import os
 import numpy as np
 import skimage.feature as sf
 import cv2
+from glob import glob
+import pandas as pd
 
 # Base path
 base_path = "C:/Users/peter_idoko.VACFSS/Documents/VSCode/textureClassification"
@@ -35,3 +37,37 @@ def compute_glcm_features(image):
 # Prepare dataset
 glcm_features_list = []
 labels = []
+
+for class_label in ["wood", "brick", "stone"]:
+    class_path = os.path.join(base_path, class_label)
+    image_files = glob(os.path.join(class_path, "*.jpg")) + glob(os.path.join(class_path, "*.png")) + glob(os.path.join(class_path, "*.webp")) + glob(os.path.join(class_path, "*.tiff"))
+
+    for image_path in image_files:
+        image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+        if image is None:
+            continue
+
+        # Normalize each image
+        image = cv2.equalizeHist(image)
+
+        # Compute features for each image
+        glcm_features = compute_glcm_features(image)
+
+        glcm_features_list.append(glcm_features)
+        labels.append(class_label)
+
+# Create DataFrames for GLCM and LBP
+glcm_columns = [f"contrast_{d}_{int(np.degrees(a))}" for d in distances for a in angles] + \
+               [f"correlation_{d}_{int(np.degrees(a))}" for d in distances for a in angles] + \
+               [f"energy_{d}_{int(np.degrees(a))}" for d in distances for a in angles] + \
+               [f"homogeneity_{d}_{int(np.degrees(a))}" for d in distances for a in angles]
+
+df_glcm = pd.DataFrame(glcm_features_list, columns=glcm_columns)
+df_glcm['label'] = labels
+
+# Save CSV files
+glcm_csv_path = os.path.join(base_path, "texture_features_glcm.csv")
+
+df_glcm.to_csv(glcm_csv_path, index=False)
+
+print(f"Feature extraction complete. GLCM data saved to {glcm_csv_path}")
