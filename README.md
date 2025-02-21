@@ -21,15 +21,7 @@ Saves trained models for future use.
 Allows users to upload an image and classify it using GLCM or LBP features.
 
 ### Project Structure
-📁 textureClassification/
-│── 📁 features/                   # Extracted feature CSVs & confusion matrix plots
-│── 📁 models/                     # Saved ML models
-│── 📁 sample_images/               # Example textures for testing
-│── 📜 config.py                    # Config file (paths, parameters)
-│── 📜 feature_extraction.py         # Feature extraction pipeline (GLCM & LBP)
-│── 📜 app.py                        # Model training, evaluation & Gradio UI
-│── 📜 requirements.txt               # Python dependencies
-│── 📜 README.md                      # Project documentation
+textureClassification/ │── features/ # Extracted feature CSVs & confusion matrix plots │── models/ # Saved ML models │── sample_images/ # Example textures for testing │── config.py # Config file (paths, parameters) │── feature_extraction.py # Feature extraction pipeline (GLCM & LBP) │── app.py # Model training, evaluation & Gradio UI │── requirements.txt # Python dependencies │── README.md # Project documentation
 
 ### Setup & Installation
 #### Install Dependencies
@@ -38,16 +30,7 @@ pip install -r requirements.txt
 ```
 
 #### Dataset Structure
-📁 dataset/
-    ├── 📁 wood/
-    │   ├── image1.jpg
-    │   ├── image2.png
-    ├── 📁 brick/
-    │   ├── image1.jpg
-    │   ├── image2.png
-    ├── 📁 stone/
-    │   ├── image1.jpg
-    │   ├── image2.png
+dataset/ ├── wood/ │ ├── image1.jpg │ ├── image2.png ├── brick/ │ ├── image1.jpg │ ├── image2.png ├── stone/ │ ├── image1.jpg │ ├── image2.png
 
 ### Feature Extraction
 #### To extract GLCM and LBP features from images, run:
@@ -77,11 +60,12 @@ Get the predicted texture class.
 
 ### Model Performance
 #### Each classifier is evaluated using a confusion matrix:
-Model	(GLCM)	(LBP) Accuracy
-SVM	    92.5%	90.1%
-RFst	89.7%	87.3%
-k-NN	85.4%	83.9%
-LRgn	81.2%	80.5%
+| Model  | Accuracy (GLCM) | Accuracy (LBP) |
+|--------|---------------|---------------|
+| SVM    | 92.5%        | 90.1%        |
+| RFst   | 89.7%        | 87.3%        |
+| k-NN   | 85.4%        | 83.9%        |
+| LRgn   | 81.2%        | 80.5%        |
 
 ### Configuration
 #### Modify config.py to adjust:
