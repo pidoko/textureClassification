@@ -7,6 +7,7 @@ import skimage.feature as sf
 import cv2
 from glob import glob
 import pandas as pd
+from skimage.feature import local_binary_pattern
 
 # Base path
 base_path = "C:/Users/peter_idoko.VACFSS/Documents/VSCode/textureClassification"
@@ -17,6 +18,11 @@ distances = [1, 2, 3, 4]
 
 # Captures the four primary orientations in a 2D image
 angles = [0, np.pi/4, np.pi/2, 3*np.pi/4]
+
+# LBP parameters: radius, points, method
+LBP_RADIUS = 3  # Defines neighborhood radius
+LBP_POINTS = min(8 * LBP_RADIUS, 24)  # Number of points for LBP
+LBP_METHOD = "uniform"  # Rotation-invariant LBP
 
 # Resize images to a smaller size to speed up GLCM processing
 IMAGE_SIZE = (64, 64) # 64x64 pixels
@@ -34,8 +40,20 @@ def compute_glcm_features(image):
     # Concatenate 1D arrays into single 1D feature vector
     return np.hstack([contrast, correlation, energy, homogeneity])
 
+# Function to compute LBP features
+def compute_lbp_features(image):
+    image = cv2.resize(image, IMAGE_SIZE)
+    lbp = local_binary_pattern(image, P=LBP_POINTS, R=LBP_RADIUS, method=LBP_METHOD)
+
+    # Compute histogram of LBP values
+    lbp_hist, _ = np.histogram(lbp.ravel(), bins=np.arange(0, LBP_POINTS + 3), range=(0, LBP_POINTS + 2))
+    lbp_hist = lbp_hist.astype("float")
+    lbp_hist /= lbp_hist.sum()  # Normalize histogram
+    return lbp_hist
+
 # Prepare dataset
 glcm_features_list = []
+lbp_features_list = []
 labels = []
 
 for class_label in ["wood", "brick", "stone"]:
@@ -52,8 +70,11 @@ for class_label in ["wood", "brick", "stone"]:
 
         # Compute features for each image
         glcm_features = compute_glcm_features(image)
+        lbp_features = compute_lbp_features(image)
 
         glcm_features_list.append(glcm_features)
+        lbp_features_list.append(lbp_features)
+
         labels.append(class_label)
 
 # Create DataFrames for GLCM and LBP
@@ -61,13 +82,20 @@ glcm_columns = [f"contrast_{d}_{int(np.degrees(a))}" for d in distances for a in
                [f"correlation_{d}_{int(np.degrees(a))}" for d in distances for a in angles] + \
                [f"energy_{d}_{int(np.degrees(a))}" for d in distances for a in angles] + \
                [f"homogeneity_{d}_{int(np.degrees(a))}" for d in distances for a in angles]
+lbp_columns = [f"lbp_{i}" for i in range(LBP_POINTS + 2)]  # LBP feature names
 
 df_glcm = pd.DataFrame(glcm_features_list, columns=glcm_columns)
+df_lbp = pd.DataFrame(lbp_features_list, columns=lbp_columns)
+
 df_glcm['label'] = labels
+df_lbp['label'] = labels
 
 # Save CSV files
 glcm_csv_path = os.path.join(base_path, "texture_features_glcm.csv")
+lbp_csv_path = os.path.join(base_path, "texture_features_lbp.csv")
 
 df_glcm.to_csv(glcm_csv_path, index=False)
+df_lbp.to_csv(lbp_csv_path, index=False)
 
 print(f"Feature extraction complete. GLCM data saved to {glcm_csv_path}")
+print(f"Feature extraction complete. LBP data saved to {lbp_csv_path}")
