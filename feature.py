@@ -9,6 +9,7 @@ from glob import glob
 import pandas as pd
 from skimage.feature import local_binary_pattern, graycomatrix, graycoprops
 from pathlib import Path
+from typing import List
 from config import BASE_PATH, IMAGE_SIZE, DISTANCES, ANGLES, LBP_RADIUS, LBP_POINTS, LBP_METHOD, TEXTURE_CLASSES, OUTPUT_DIR
 
 # Setup logging
