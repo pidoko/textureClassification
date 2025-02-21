@@ -5,20 +5,20 @@ This project implements Gray Level Co-occurrence Matrix (GLCM) and Local Binary 
 
 ### Features
 #### Feature Extraction
-##### GLCM: Captures contrast, correlation, energy, and homogeneity at different distances & angles.
-##### LBP: Captures micro-patterns via a histogram-based texture representation.
+GLCM: Captures contrast, correlation, energy, and homogeneity at different distances & angles.
+LBP: Captures micro-patterns via a histogram-based texture representation.
 
 #### Machine Learning Pipeline
-##### Trains and optimizes SVM, Random Forest, k-NN, and Logistic Regression.
-##### Uses GridSearchCV for hyperparameter tuning.
-##### Implements feature scaling using StandardScaler.
+Trains and optimizes SVM, Random Forest, k-NN, and Logistic Regression.
+Uses GridSearchCV for hyperparameter tuning.
+Implements feature scaling using StandardScaler.
 
 #### Visualization & Evaluation
-##### Generates confusion matrices for model performance analysis.
-##### Saves trained models for future use.
+Generates confusion matrices for model performance analysis.
+Saves trained models for future use.
 
 #### Interactive UI with Gradio
-##### Allows users to upload an image and classify it using GLCM or LBP features.
+Allows users to upload an image and classify it using GLCM or LBP features.
 
 ### Project Structure
 📁 textureClassification/
@@ -55,8 +55,8 @@ pip install -r requirements.txt
 python feature_extraction.py
 ```
 #### Output:
-##### Saves GLCM features to features/texture_features_glcm.csv
-##### Saves LBP features to features/texture_features_lbp.csv
+Saves GLCM features to features/texture_features_glcm.csv
+Saves LBP features to features/texture_features_lbp.csv
 
 ### Train & Evaluate Models
 #### To train ML classifiers on extracted features, run:
@@ -64,16 +64,16 @@ python feature_extraction.py
 python app.py
 ```
 #### This will:
-##### Load GLCM & LBP datasets
-##### Train SVM, Random Forest, k-NN, and Logistic Regression
-##### Generate confusion matrices for evaluation
-##### Launch an interactive classification UI
+Load GLCM & LBP datasets
+Train SVM, Random Forest, k-NN, and Logistic Regression
+Generate confusion matrices for evaluation
+Launch an interactive classification UI
 
 ### Gradio Interface Usage: 
-##### Upload an image.
-##### Select GLCM or LBP for feature extraction.
-##### Choose a classifier (e.g., SVM, Random Forest).
-##### Get the predicted texture class.
+Upload an image.
+Select GLCM or LBP for feature extraction.
+Choose a classifier (e.g., SVM, Random Forest).
+Get the predicted texture class.
 
 ### Model Performance
 #### Each classifier is evaluated using a confusion matrix:
