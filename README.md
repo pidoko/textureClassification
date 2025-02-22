@@ -24,15 +24,19 @@ Logistic Regression was selected because it is a simple and efficient model that
 ### Features
 #### Feature Extraction
 GLCM: Captures contrast, correlation, energy, and homogeneity at different distances & angles.
+
 LBP: Captures micro-patterns via a histogram-based texture representation.
 
 #### Machine Learning Pipeline
 Trains and optimizes SVM, Random Forest, k-NN, and Logistic Regression.
+
 Uses GridSearchCV for hyperparameter tuning because it tests each parameter combination on different subsets of the data, leading to more reliable results.
+
 Implements feature scaling using StandardScaler because many machine learning algorithms, such as SVM and kNN, rely on distance-based calculations, and if features have different scales, the model might give more importance to features with larger values.
 
 #### Visualization & Evaluation
 Generates confusion matrices for model performance analysis because they help analyze where the model is making errors and whether certain classes are being misclassified more often than others.
+
 Saves trained models for future use.
 
 #### Interactive UI with Gradio
@@ -57,6 +61,7 @@ python feature_extraction.py
 ```
 #### Output:
 Saves GLCM features to features/texture_features_glcm.csv
+
 Saves LBP features to features/texture_features_lbp.csv
 
 ### Train & Evaluate Models
